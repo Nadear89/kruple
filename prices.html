@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>เช็คราคาซ่อม | ครูเปิ้ล โมบายเซอร์วิส</title>
+<meta name="description" content="เช็คราคาซ่อมมือถือและแท็บเล็ต ครูเปิ้ล โมบายเซอร์วิส">
+<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#E83E7A;--pink-d:#C2185B;--pink-l:#FDEEF4;--ink:#0F172A;--mut:#64748B;--line:#E5E7EB;--bg:#F4F6F9;--card:#FFFFFF}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 'IBM Plex Sans Thai',system-ui,-apple-system,sans-serif}
+header{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:2}
+.bar{max-width:760px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:10px}
+.logo{width:36px;height:36px;border-radius:10px;background:var(--pink);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.shop{font-weight:600;min-width:0;flex:1;line-height:1.25}
+.shop small{display:block;font-weight:400;font-size:12px;color:var(--mut)}
+.call{padding:8px 14px;border-radius:999px;background:var(--pink);color:#fff;text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap}
+main{max-width:760px;margin:0 auto;padding:18px 16px 40px;display:flex;flex-direction:column;gap:14px}
+h1{margin:0;font-size:22px;font-weight:600;line-height:1.3}
+.hint{margin:-10px 0 0;color:var(--mut);font-size:14px}
+.search{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit;font-size:16px;outline:none}
+.search:focus{border-color:var(--pink)}
+button{font:inherit;color:inherit;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:12px}
+.tile{min-height:112px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px 8px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.tile:hover,.row:hover{border-color:var(--pink);background:var(--pink-l)}
+.tile b{font-size:15px;font-weight:700;line-height:1.2;text-align:center}
+.tile img{height:44px;max-width:100%;object-fit:contain}
+.tile span,.row span{font-size:12px;color:var(--mut)}
+.back{align-self:flex-start;padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--pink);font-size:13px;font-weight:500}
+.list{display:flex;flex-direction:column;gap:8px}
+.row{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);text-align:left;font-weight:500}
+.prices{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.pr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-top:1px solid var(--line)}
+.pr:first-child{border-top:0}
+.pr b{color:var(--pink-d);font-weight:600;white-space:nowrap}
+.note{font-size:12.5px;color:var(--mut);margin:0}
+.msg{padding:28px 16px;text-align:center;color:var(--mut);background:var(--card);border:1px solid var(--line);border-radius:12px}
+.retry{margin-top:12px;padding:9px 18px;border:0;border-radius:8px;background:var(--pink);color:#fff}
+:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <div class="logo" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M12.4 7.1c.3-1.9 1.2-3.3 2.6-4.1" fill="none" stroke="#FFF" stroke-width="1.6" stroke-linecap="round"/><path d="M12.9 6.2c.9-2.2 3.1-3.3 5.6-2.9-.6 2.4-2.9 3.7-5.6 2.9z" fill="#FFF" opacity=".9"/><path d="M12 8.1c-1-.8-2.3-1.2-3.6-1.1C5.7 7.2 4 9.5 4 12.4c0 3.8 2.6 8.3 5.3 8.3.9 0 1.6-.5 2.7-.5s1.8.5 2.7.5c2.7 0 5.3-4.5 5.3-8.3 0-2.9-1.7-5.2-4.4-5.4-1.3-.1-2.6.3-3.6 1.1z" fill="#FFF"/></svg></div>
+  <div class="shop"><span id="shop">ครูเปิ้ล โมบายเซอร์วิส</span><small>เช็คราคาซ่อม</small></div>
+  <a id="call" class="call" hidden>โทรหาร้าน</a>
+</div></header>
+<main id="app" aria-live="polite"><div class="msg">กำลังโหลดราคา…</div></main>
+<script>
+(function () {
+  var SB_URL = 'https://vqmhycnemaczuwcwyddq.supabase.co', SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZxbWh5Y25lbWFjenV3Y3d5ZGRxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1OTExMzQsImV4cCI6MjEwODE2NzEzNH0.HtzMoX9lto4AYRHPZxpGNsfKdauUmUmu_lzxtulbJgw';
+  var BRAND_LOGOS = {};
+  var DEF = {
+    iphone: [['i_scr_og','จอแท้'],['i_scr_oca','จอแท้ OCA'],['i_scr_hq','จอเทียบแท้'],['i_scr','จอเทียบ'],['i_bat_og','แบตแท้'],['i_bat_hq','แบตเทียบแท้'],['i_bat','แบตเทียบ'],['i_back','ฝาหลัง'],['i_body_hq','บอดี้เทียบ'],['i_body_og','บอดี้แท้'],['i_board','ซ่อมบอร์ด'],['i_port','แพรชาร์จ'],['i_cam','กล้องหลัง'],['i_fcam','กล้องหน้า']],
+    ipad: [['p_full','จอชุด'],['p_lcd','จอใน'],['p_touch','ทัชสกรีนแท้'],['p_bl','เปลี่ยนแบล็คไลท์'],['p_glass','ลอกกระจก'],['p_bat','แบต'],['p_board','ซ่อมบอร์ด'],['p_body','บอดี้'],['p_bend','ดัดบอดี้'],['p_port','แพรชาร์จ']],
+    android: [['a_scr','จอ'],['a_scr_og','จอแท้'],['a_bat','แบต'],['a_port','ก้นชาร์จ'],['a_body','บอดี้']]
+  };
+  var MIG = { iphone: { screen:'i_scr', battery:'i_bat', port:'i_port', camera:'i_cam', back:'i_back', body:'i_body_hq' }, ipad: { screen:'p_full', battery:'p_bat', port:'p_port', body:'p_body' }, android: { screen:'a_scr', battery:'a_bat', body:'a_body' } };
+  var FIRST = ['iPhone','iPad','Samsung','OPPO / realme','vivo','Xiaomi','Huawei'];
+  var app = document.getElementById('app'), data = null, q = '';
+
+  function groupOf(b) { return b === 'iPhone' ? 'iphone' : b === 'iPad' ? 'ipad' : 'android'; }
+  function normBrand(b, m) { return b === 'Apple' ? (/^ipad/i.test(m || '') ? 'iPad' : 'iPhone') : (b === 'OPPO' || /^realme$/i.test(b || '')) ? 'OPPO / realme' : b; }
+  function normModel(b, m) { return /^samsung$/i.test(b || '') && m ? String(m).replace(/^Galaxy\s+/i, '').replace(/ \/ Galaxy /gi, ' / ') : /^realme$/i.test(b || '') && !/^realme/i.test(m || '') ? 'realme ' + m : m; }
+  function baht(v) { var n = Number(v); return isNaN(n) ? String(v) : '฿' + Math.round(n).toLocaleString('en-US'); }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function clear() { app.textContent = ''; window.scrollTo(0, 0); }
+  function route(b, m) { location.hash = b ? 'b=' + encodeURIComponent(b) + (m ? '&m=' + encodeURIComponent(m) : '') : ''; }
+  function parseHash() { var o = {}; location.hash.slice(1).split('&').forEach(function (p) { var i = p.indexOf('='); if (i > 0) { try { o[p.slice(0, i)] = decodeURIComponent(p.slice(i + 1)); } catch (e) {} } }); return o; }
+  function types(g) { var c = data.config && data.config[g]; return c && c.length ? c : DEF[g].map(function (r) { return { k: r[0], t: r[1] }; }); }
+
+  function prepare(raw) {
+    var brands = {};
+    (raw.models || []).forEach(function (r) {
+      var b = normBrand(r.brand, r.model), n = normModel(r.brand, r.model), mig = MIG[groupOf(b)], p = {};
+      Object.keys(r.prices || {}).forEach(function (k) { p[mig[k] || k] = r.prices[k]; });
+      (brands[b] = brands[b] || {})[n] = p;
+    });
+    data = { config: raw.config, order: raw.order || {}, brands: brands };
+    var s = raw.shop || {};
+    if (s.name) document.getElementById('shop').textContent = s.name;
+    var tel = String(s.phone || '').replace(/[^\d+]/g, ''), c = document.getElementById('call');
+    if (tel.length >= 9) { c.href = 'tel:' + tel; c.hidden = false; }
+  }
+  function brandList() {
+    return Object.keys(data.brands).sort(function (a, b) {
+      var x = FIRST.indexOf(a), y = FIRST.indexOf(b);
+      return (x < 0 ? 99 : x) - (y < 0 ? 99 : y) || a.localeCompare(b);
+    });
+  }
+  function modelsOf(b) {
+    var all = Object.keys(data.brands[b] || {}), ord = data.order[b] || [];
+    return ord.filter(function (n) { return all.indexOf(n) >= 0; }).concat(all.filter(function (n) { return ord.indexOf(n) < 0; }));
+  }
+  function searchBox(ph, on) {
+    var i = el('input', 'search'); i.type = 'search'; i.placeholder = ph; i.value = q; i.setAttribute('aria-label', ph);
+    i.addEventListener('input', function () { q = i.value; on(); });
+    return i;
+  }
+  function viewBrands() {
+    clear();
+    app.appendChild(el('h1', '', 'เช็คราคาซ่อม'));
+    app.appendChild(el('p', 'hint', 'เลือกยี่ห้อ หรือค้นหารุ่นได้เลย'));
+    var out = el('div', '');
+    function draw() {
+      out.textContent = '';
+      var s = q.trim().toLowerCase();
+      if (s) {
+        var list = el('div', 'list'), hits = 0;
+        brandList().forEach(function (b) { modelsOf(b).forEach(function (n) {
+          if ((b + ' ' + n).toLowerCase().indexOf(s) < 0 || hits >= 40) return;
+          hits++;
+          var r = el('button', 'row'); r.type = 'button'; r.appendChild(el('div', '', n)); r.appendChild(el('span', '', b));
+          r.addEventListener('click', function () { route(b, n); });
+          list.appendChild(r);
+        }); });
+        out.appendChild(hits ? list : el('div', 'msg', 'ไม่พบรุ่นที่ค้นหา'));
+        return;
+      }
+      var g = el('div', 'grid');
+      brandList().forEach(function (b) {
+        var t = el('button', 'tile'); t.type = 'button';
+        if (BRAND_LOGOS[b]) { var im = el('img'); im.src = BRAND_LOGOS[b]; im.alt = ''; t.appendChild(im); }
+        t.appendChild(el('b', '', b)); t.appendChild(el('span', '', modelsOf(b).length + ' รุ่น'));
+        t.addEventListener('click', function () { q = ''; route(b); });
+        g.appendChild(t);
+      });
+      out.appendChild(brandList().length ? g : el('div', 'msg', 'ยังไม่มีข้อมูลราคา'));
+    }
+    app.appendChild(searchBox('ค้นหารุ่น เช่น 13 Pro, A54', draw));
+    app.appendChild(out); draw();
+  }
+  function backBtn(label, fn) { var b = el('button', 'back', label); b.type = 'button'; b.addEventListener('click', fn); return b; }
+  function viewModels(b) {
+    clear();
+    app.appendChild(backBtn('‹ เลือกยี่ห้ออื่น', function () { route(); }));
+    app.appendChild(el('h1', '', b));
+    var list = el('div', 'list');
+    function draw() {
+      list.textContent = '';
+      var s = q.trim().toLowerCase(), names = modelsOf(b).filter(function (n) { return n.toLowerCase().indexOf(s) >= 0; });
+      names.forEach(function (n) { var r = el('button', 'row'); r.type = 'button'; r.appendChild(el('div', '', n)); r.appendChild(el('span', '', '›')); r.addEventListener('click', function () { route(b, n); }); list.appendChild(r); });
+      if (!names.length) list.appendChild(el('div', 'msg', 'ไม่พบรุ่นที่ค้นหา'));
+    }
+    app.appendChild(searchBox('ค้นหารุ่นใน ' + b, draw));
+    app.appendChild(list); draw();
+  }
+  function viewPrice(b, n) {
+    clear();
+    q = '';
+    app.appendChild(backBtn('‹ เลือกรุ่นอื่น', function () { route(b); }));
+    app.appendChild(el('h1', '', n));
+    app.appendChild(el('p', 'hint', b));
+    var p = data.brands[b][n], box = el('div', 'prices'), any = false;
+    types(groupOf(b)).forEach(function (r) {
+      if (p[r.k] == null) return;
+      any = true;
+      var d = el('div', 'pr'); d.appendChild(el('span', '', r.t)); d.appendChild(el('b', '', baht(p[r.k]))); box.appendChild(d);
+    });
+    app.appendChild(any ? box : el('div', 'msg', 'รุ่นนี้กรุณาสอบถามราคากับทางร้าน'));
+    app.appendChild(el('p', 'note', 'กรุณาสอบถามราคาและอาการกับทางร้านอีกครั้งก่อนเข้ารับบริการ'));
+  }
+  function render() {
+    if (!data) return;
+    var h = parseHash();
+    if (h.b && data.brands[h.b]) { if (h.m && data.brands[h.b][h.m]) viewPrice(h.b, h.m); else viewModels(h.b); }
+    else viewBrands();
+  }
+  function fail() {
+    clear();
+    var m = el('div', 'msg', 'โหลดราคาไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
+    var r = el('button', 'retry', 'ลองใหม่'); r.type = 'button'; r.addEventListener('click', load);
+    m.appendChild(document.createElement('br')); m.appendChild(r); app.appendChild(m);
+  }
+  function load() {
+    app.textContent = ''; app.appendChild(el('div', 'msg', 'กำลังโหลดราคา…'));
+    fetch(SB_URL + '/rest/v1/rpc/get_public_prices', { method: 'POST', headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' }, body: '{}' })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (j) { prepare(j); render(); })
+      .catch(fail);
+  }
+  window.addEventListener('hashchange', render);
+  load();
+})();
+</script>
+</body>
+</html>
